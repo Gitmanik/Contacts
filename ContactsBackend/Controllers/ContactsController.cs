@@ -1,5 +1,6 @@
 using ContactsBackend.Data;
 using ContactsBackend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +46,7 @@ public class ContactsController : ControllerBase
 
     // POST: api/contacts
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Contact>> CreateContact(Contact contact)
     {
         if (!ModelState.IsValid)
@@ -95,6 +97,7 @@ public class ContactsController : ControllerBase
 
     // PUT: api/contacts/5
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateContact(int id, Contact contact)
     {
         if (id != contact.Id)
@@ -160,6 +163,7 @@ public class ContactsController : ControllerBase
 
     // DELETE: api/contacts/5
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteContact(int id)
     {
         var contact = await _context.Contacts.FindAsync(id);

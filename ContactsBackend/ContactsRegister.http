@@ -1,0 +1,17 @@
+@baseUrl = http://localhost:5102/api
+
+### Register new account
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "StrongP@ssw0rd",
+  "confirmPassword": "StrongP@ssw0rd",
+  "firstName": "Jan",
+  "lastName": "Kowalski"
+}
+
+> {%
+    client.assert(response.status === 200, "Unsuccessful registration")
+%}

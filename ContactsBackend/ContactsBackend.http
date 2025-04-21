@@ -4,9 +4,26 @@
 GET {{baseUrl}}/contacts
 Accept: application/json
 
+### User log in
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "StrongP@ssw0rd"
+}
+
+> {%
+    client.assert(response.status === 200, "Login failed")
+    client.global.set("authToken", response.body.token)
+    client.log("Auth token: " + response.body.token)
+%}
+
+
 ### Add new contact
 POST {{baseUrl}}/contacts
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "firstName": "Jan",
@@ -36,6 +53,7 @@ Accept: application/json
 ### Update created contact
 PUT {{baseUrl}}/contacts/{{contactId}}
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "id": {{contactId}},
@@ -55,6 +73,7 @@ Content-Type: application/json
 
 ### Delete created contact
 DELETE {{baseUrl}}/contacts/{{contactId}}
+Authorization: Bearer {{authToken}}
 
 > {% 
     client.assert(response.status === 204, "Contact was not deleted")
