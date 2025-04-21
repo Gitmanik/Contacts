@@ -78,3 +78,43 @@ Authorization: Bearer {{authToken}}
 > {% 
     client.assert(response.status === 204, "Contact was not deleted")
 %}
+
+### Get all categories
+GET {{baseUrl}}/categories
+Accept: application/json
+
+> {% 
+    client.assert(response.status === 200, "Failed to get categories")
+ %}
+
+### Get category by id
+GET {{baseUrl}}/categories/1
+Accept: application/json
+
+> {% 
+    client.assert(response.status === 200, "Failed to get category")
+ %}
+
+### Get all subcategories
+GET {{baseUrl}}/subcategories
+Accept: application/json
+
+> {% 
+    client.assert(response.status === 200, "Failed to get subcategories")
+ %}
+
+### Get subcategory by ID
+GET {{baseUrl}}/subcategories/1
+Accept: application/json
+
+> {% 
+    client.assert(response.status === 200, "Failed to get subcategory")
+ %}
+
+### Get subcategories by category ID
+GET {{baseUrl}}/subcategories/category/1
+Accept: application/json
+
+> {% 
+    client.assert(response.status === 200, "Failed to get subcategories by category")
+ %}
