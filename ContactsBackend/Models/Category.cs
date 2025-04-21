@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ContactsBackend.Models;
 
@@ -14,6 +15,9 @@ public class Category
     
     public bool AllowsCustomSubcategory { get; set; }
     
+    [JsonIgnore]
     public ICollection<Subcategory> Subcategories { get; set; }
+    
+    [JsonIgnore]
     public ICollection<Contact> Contacts { get; set; }
 }
