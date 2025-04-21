@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ContactsBackend.Models;
@@ -27,10 +28,16 @@ public class Contact {
     public int CategoryId { get; set; }
     [JsonIgnore]
     public Category? Category { get; set; }
+    
+    [NotMapped]
+    public string? CategoryName { get => Category?.Name; }
 
     public int? SubcategoryId { get; set; }
     [JsonIgnore]
     public Subcategory? Subcategory { get; set; }
+    
+    [NotMapped]
+    public string? SubcategoryName { get => Subcategory?.Name; }
     
     [StringLength(50)]
     public string? OtherSubcategory { get; set; }
