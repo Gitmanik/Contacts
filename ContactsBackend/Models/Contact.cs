@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ContactsBackend.Models;
 
@@ -24,13 +25,15 @@ public class Contact {
 
     [Required]
     public int CategoryId { get; set; }
-    public Category Category { get; set; }
+    [JsonIgnore]
+    public Category? Category { get; set; }
 
     public int? SubcategoryId { get; set; }
-    public Subcategory Subcategory { get; set; }
+    [JsonIgnore]
+    public Subcategory? Subcategory { get; set; }
     
     [StringLength(50)]
-    public string OtherSubcategory { get; set; }
+    public string? OtherSubcategory { get; set; }
 
     [Phone]
     public string Phone { get; set; }
