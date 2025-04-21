@@ -1,0 +1,61 @@
+@baseUrl = http://localhost:5102/api
+
+### Get all contacts
+GET {{baseUrl}}/contacts
+Accept: application/json
+
+### Add new contact
+POST {{baseUrl}}/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Jan",
+  "lastName": "Kowalski",
+  "email": "{{$uuid}}@example.com",
+  "password": "Test123456",
+  "CategoryId": 1,
+  "SubcategoryId": 1,
+  "phone": "+48123456789",
+  "birthDate": "1990-01-01"
+}
+
+> {%
+    client.assert(response.status === 201, "Contact was not created")
+    client.global.set("contactId", response.body.id);
+%}
+
+
+### Get created contact using response from previous request
+GET {{baseUrl}}/contacts/{{contactId}}
+Accept: application/json
+
+> {% 
+    client.assert(response.status === 200, "Contact was not found")
+ %}
+
+### Update created contact
+PUT {{baseUrl}}/contacts/{{contactId}}
+Content-Type: application/json
+
+{
+  "id": {{contactId}},
+  "firstName": "Jan",
+  "lastName": "Nowak",
+  "email": "{{$uuid}}@example.com",
+  "password": "Test123456",
+  "categoryId": 1,
+  "subcategoryId": 2,
+  "phone": "+48987654321",
+  "birthDate": "1990-01-01"
+}
+
+> {% 
+    client.assert(response.status === 204, "Contact was not updated")
+ %}
+
+### Delete created contact
+DELETE {{baseUrl}}/contacts/{{contactId}}
+
+> {% 
+    client.assert(response.status === 204, "Contact was not deleted")
+%}
