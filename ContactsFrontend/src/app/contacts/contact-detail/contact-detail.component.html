@@ -1,0 +1,4 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <button type="submit">Save</button>
+  <button type="button" (click)="delete()" *ngIf="contactId">Delete</button>
+</form>
