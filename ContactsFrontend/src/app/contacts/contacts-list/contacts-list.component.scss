@@ -7,6 +7,14 @@
     margin-bottom: 20px;
   }
 
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
   .contacts-list {
     list-style: none;
     padding: 0;

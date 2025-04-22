@@ -1,5 +1,22 @@
 <div class="contacts-container">
-  <a mat-raised-button color="primary" [routerLink]="['/contacts/new']">Dodaj nowy kontakt</a>
+  <div class="actions">
+    <a
+      *ngIf="isLoggedIn"
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/contacts/new']"
+    >
+      Dodaj nowy kontakt
+    </a>
+
+    <!-- Przełącznik logowania/wylogowania -->
+    <ng-container *ngIf="isLoggedIn; else loginTpl">
+      <a mat-raised-button color="warn" (click)="logout()">Wyloguj</a>
+    </ng-container>
+    <ng-template #loginTpl>
+      <a mat-raised-button color="primary" (click)="login()">Zaloguj</a>
+    </ng-template>
+  </div>
 
   <ul class="contacts-list">
     <li *ngFor="let c of contacts">
