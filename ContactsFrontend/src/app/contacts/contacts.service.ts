@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Contact } from '../models/contact.model';
+import { Category } from '../models/category.model';
+import { Subcategory } from '../models/subcategory.model';
 import { environment } from '../../../environment';
 
 @Injectable({ providedIn: 'root' })
@@ -28,5 +30,26 @@ export class ContactsService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  getAllCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(environment.apiBaseUrl + '/categories');
+  }
+
+  getCategory(id: number): Observable<Category> {
+    return this.http.get<Category>(environment.apiBaseUrl + `/categories/${id}`);
+  }
+
+  // Metody dla subkategorii
+  getAllSubcategories(): Observable<Subcategory[]> {
+    return this.http.get<Subcategory[]>(environment.apiBaseUrl + '/subcategories');
+  }
+
+  getSubcategory(id: number): Observable<Subcategory> {
+    return this.http.get<Subcategory>(environment.apiBaseUrl + `/subcategories/${id}`);
+  }
+
+  getSubcategoriesByCategory(categoryId: number): Observable<Subcategory[]> {
+    return this.http.get<Subcategory[]>(environment.apiBaseUrl + `/subcategories/category/${categoryId}`);
   }
 }
