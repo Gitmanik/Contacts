@@ -1,4 +1,75 @@
 <form [formGroup]="form" (ngSubmit)="save()">
-  <button type="submit">Save</button>
-  <button type="button" (click)="delete()" *ngIf="contactId">Delete</button>
+  <div class="form-container">
+    <h2>{{ contactId ? 'Edytuj kontakt' : 'Dodaj nowy kontakt' }}</h2>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Imię</mat-label>
+      <input matInput formControlName="firstName" required>
+      <mat-error *ngIf="form.get('firstName')?.invalid">Imię jest wymagane</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nazwisko</mat-label>
+      <input matInput formControlName="lastName" required>
+      <mat-error *ngIf="form.get('lastName')?.invalid">Nazwisko jest wymagane</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" required>
+      <mat-error *ngIf="form.get('email')?.invalid">Poprawny email jest wymagany</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Hasło</mat-label>
+      <input matInput formControlName="password" type="password" required>
+      <mat-error *ngIf="form.get('password')?.invalid">Hasło jest wymagane</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Kategoria</mat-label>
+      <mat-select formControlName="categoryId" required>
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('categoryId')?.invalid">Kategoria jest wymagana</mat-error>
+    </mat-form-field>
+
+    <ng-container *ngIf="showSubcategories">
+      <mat-form-field appearance="fill" *ngIf="subcategories.length > 0">
+        <mat-label>Subkategoria</mat-label>
+        <mat-select formControlName="subcategoryId">
+          <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">
+            {{ subcategory.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+
+    <mat-form-field appearance="fill" *ngIf="allowCustomSubcategory">
+      <mat-label>Własna subkategoria</mat-label>
+      <input matInput formControlName="otherSubcategory">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Telefon</mat-label>
+      <input matInput formControlName="phone" required>
+      <mat-error *ngIf="form.get('phone')?.invalid">Telefon jest wymagany</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Data urodzenia</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="form.get('birthDate')?.invalid">Data urodzenia jest wymagana</mat-error>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Zapisz</button>
+      <button mat-raised-button color="warn" type="button" (click)="delete()" *ngIf="contactId">Usuń</button>
+      <button mat-button type="button" routerLink="/contacts">Anuluj</button>
+    </div>
+  </div>
 </form>

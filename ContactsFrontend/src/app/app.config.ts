@@ -5,6 +5,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { apiInterceptor } from './core/api.interceptor';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([apiInterceptor])
     ),
-    provideAnimations()
+    provideAnimations(),
+    provideNativeDateAdapter()
   ]
 };
