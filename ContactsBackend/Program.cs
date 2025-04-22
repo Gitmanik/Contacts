@@ -9,16 +9,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularDevServer",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:4200")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
-});
+builder.Services.AddCors(opts => opts.AddPolicy("AllowAll", 
+    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 
 // SQLite database context
@@ -138,6 +130,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors("AllowAngularDevServer");
+app.UseCors("AllowAll");
 
 app.Run();
