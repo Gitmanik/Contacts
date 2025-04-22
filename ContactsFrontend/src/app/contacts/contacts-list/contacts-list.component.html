@@ -1,7 +1,20 @@
-<ul>
-  <li *ngFor="let c of contacts">
-    <a [routerLink]="['/contacts', c.id]">
-      {{ c.firstName }} {{ c.lastName }} — {{ c.email }} ({{ c.categoryName }})
-    </a>
-  </li>
-</ul>
+<div class="contacts-container">
+  <h2>Kontakty</h2>
+
+  <a mat-raised-button color="primary" [routerLink]="['/contacts/new']">Dodaj nowy kontakt</a>
+
+  <ul class="contacts-list">
+    <li *ngFor="let c of contacts">
+      <a [routerLink]="['/contacts', c.id]" class="contact-item">
+        <span class="contact-name">{{ c.firstName }} {{ c.lastName }}</span>
+        <span class="contact-email">{{ c.email }}</span>
+        <span class="contact-category">
+          {{ c.categoryName }}
+          <ng-container *ngIf="c.subcategoryName || c.otherSubcategory">
+            / {{ c.subcategoryName || c.otherSubcategory }}
+          </ng-container>
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
