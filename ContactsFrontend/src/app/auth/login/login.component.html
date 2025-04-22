@@ -1,32 +1,76 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <ng-container *ngIf="isRegister">
-    <label>Imię</label>
-    <input formControlName="firstName" type="text" />
-    <label>Nazwisko</label>
-    <input formControlName="lastName" type="text" />
+<mat-card class="auth-card">
+  <mat-card-title>
+    {{ isRegister ? 'Rejestracja' : 'Logowanie' }}
+  </mat-card-title>
 
-    <label>Potwierdź hasło</label>
-    <input formControlName="confirmPassword" type="password" />
-    <div *ngIf="form.hasError('mismatch')" class="error">
-      Hasła muszą być takie same.
-    </div>
-  </ng-container>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <!-- rejestracja -->
+    <ng-container *ngIf="isRegister">
+      <mat-form-field appearance="fill">
+        <mat-label>Imię</mat-label>
+        <input matInput formControlName="firstName" />
+        <mat-error *ngIf="form.get('firstName')?.hasError('required')">
+          Imię jest wymagane
+        </mat-error>
+      </mat-form-field>
 
-  <label>Email</label>
-  <input formControlName="email" type="email" />
+      <mat-form-field appearance="fill">
+        <mat-label>Nazwisko</mat-label>
+        <input matInput formControlName="lastName" />
+        <mat-error *ngIf="form.get('lastName')?.hasError('required')">
+          Nazwisko jest wymagane
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
 
-  <label>Hasło</label>
-  <input formControlName="password" type="password" />
+    <!-- wspólne pola -->
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" />
+      <mat-error *ngIf="form.get('email')?.hasError('required')">
+        Email jest wymagany
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')">
+        Nieprawidłowy format
+      </mat-error>
+    </mat-form-field>
 
-  <button type="submit" [disabled]="form.invalid">
-    {{ isRegister ? 'Zarejestruj się' : 'Zaloguj się' }}
-  </button>
+    <mat-form-field appearance="fill">
+      <mat-label>Hasło</mat-label>
+      <input matInput formControlName="password" type="password" />
+      <mat-error *ngIf="form.get('password')?.hasError('required')">
+        Hasło jest wymagane
+      </mat-error>
+    </mat-form-field>
 
-  <p class="toggle-link">
-    <a (click)="toggleMode()" href="javascript:void(0)">
+    <!-- potwierdzenie hasła -->
+    <ng-container *ngIf="isRegister">
+      <mat-form-field appearance="fill">
+        <mat-label>Potwierdź hasło</mat-label>
+        <input matInput formControlName="confirmPassword" type="password" />
+        <mat-error *ngIf="form.hasError('mismatch')">
+          Hasła muszą być takie same
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- przycisk akcji -->
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+      class="full-width"
+    >
+      {{ isRegister ? 'Zarejestruj się' : 'Zaloguj się' }}
+    </button>
+  </form>
+
+  <mat-card-actions class="toggle-actions">
+    <button mat-button (click)="toggleMode()">
       {{ isRegister
       ? 'Masz już konto? Zaloguj się'
       : 'Nie masz konta? Zarejestruj się' }}
-    </a>
-  </p>
-</form>
+    </button>
+  </mat-card-actions>
+</mat-card>

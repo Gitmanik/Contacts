@@ -1,56 +1,77 @@
-import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
-import {NgIf} from '@angular/common';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
-    NgIf
+    RouterModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ],
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  form: FormGroup;
+export class LoginComponent implements OnInit {
+  form!: FormGroup;
   isRegister = false;
 
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router
-  ) {
-    this.form = this.createForm();
+  ) {}
+
+  ngOnInit(): void {
+    this.buildForm();
   }
 
-  private createForm(): FormGroup {
+  private buildForm(): void {
+    const controlsConfig: { [key: string]: any } = {
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    };
+
     if (this.isRegister) {
-      return this.fb.group({
+      Object.assign(controlsConfig, {
         firstName: ['', Validators.required],
-        lastName:  ['', Validators.required],
-        email:     ['', [Validators.required, Validators.email]],
-        password:  ['', Validators.required],
+        lastName: ['', Validators.required],
         confirmPassword: ['', Validators.required],
-      }, { validators: this.passwordMatchValidator });
+      });
     }
-    return this.fb.group({
-      email:    ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    });
+
+    this.form = this.fb.group(
+      controlsConfig,
+      this.isRegister ? { validators: this.passwordMatchValidator } : {}
+    );
   }
 
   private passwordMatchValidator(form: FormGroup) {
-    const pwd = form.get('password')?.value;
-    const cpw = form.get('confirmPassword')?.value;
+    const pwd = form.get('password')!.value;
+    const cpw = form.get('confirmPassword')!.value;
     return pwd === cpw ? null : { mismatch: true };
   }
 
-  // Przełącznik trybu
   toggleMode(): void {
     this.isRegister = !this.isRegister;
-    this.form = this.createForm();
+    this.buildForm();
   }
 
   submit(): void {
