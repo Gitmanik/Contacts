@@ -3,6 +3,7 @@ import { ContactsService } from '../contacts.service';
 import { Contact } from '../../models/contact.model';
 import {RouterLink} from '@angular/router';
 import {NgForOf, NgIf} from '@angular/common';
+import {MatAnchor} from '@angular/material/button';
 
 @Component({
   selector: 'app-contacts-list',
@@ -10,7 +11,8 @@ import {NgForOf, NgIf} from '@angular/common';
   imports: [
     RouterLink,
     NgForOf,
-    NgIf
+    NgIf,
+    MatAnchor
   ],
   styleUrls: ['./contacts-list.component.scss'],
   standalone: true,
