@@ -10,6 +10,13 @@ interface LoginRequest {
 interface LoginResponse {
   token: string;
 }
+interface RegisterRequest {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  lastName: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -18,7 +25,16 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(credentials: LoginRequest) {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, credentials)
+    return this.http
+      .post<LoginResponse>(`${this.baseUrl}/login`, credentials)
+      .pipe(
+        tap(res => localStorage.setItem('authToken', res.token))
+      );
+  }
+
+  register(data: RegisterRequest) {
+    return this.http
+      .post<LoginResponse>(`${this.baseUrl}/register`, data)
       .pipe(
         tap(res => localStorage.setItem('authToken', res.token))
       );

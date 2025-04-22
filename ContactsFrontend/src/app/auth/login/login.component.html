@@ -1,10 +1,32 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
+  <ng-container *ngIf="isRegister">
+    <label>Imię</label>
+    <input formControlName="firstName" type="text" />
+    <label>Nazwisko</label>
+    <input formControlName="lastName" type="text" />
+
+    <label>Potwierdź hasło</label>
+    <input formControlName="confirmPassword" type="password" />
+    <div *ngIf="form.hasError('mismatch')" class="error">
+      Hasła muszą być takie same.
+    </div>
+  </ng-container>
+
   <label>Email</label>
   <input formControlName="email" type="email" />
 
-  <label>Password</label>
+  <label>Hasło</label>
   <input formControlName="password" type="password" />
 
-  <button type="submit" [disabled]="form.invalid">Log in</button>
-</form>
+  <button type="submit" [disabled]="form.invalid">
+    {{ isRegister ? 'Zarejestruj się' : 'Zaloguj się' }}
+  </button>
 
+  <p class="toggle-link">
+    <a (click)="toggleMode()" href="javascript:void(0)">
+      {{ isRegister
+      ? 'Masz już konto? Zaloguj się'
+      : 'Nie masz konta? Zarejestruj się' }}
+    </a>
+  </p>
+</form>
