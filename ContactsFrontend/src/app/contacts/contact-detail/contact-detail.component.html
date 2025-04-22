@@ -1,34 +1,35 @@
-<form [formGroup]="form" (ngSubmit)="save()">
-  <div class="form-container">
-    <h2>{{ contactId ? 'Edytuj kontakt' : 'Dodaj nowy kontakt' }}</h2>
+<div class="form-container">
 
+  <h2>{{ contactId ? (isLoggedIn ? 'Edytuj kontakt' : 'Podgląd kontaktu') : 'Dodaj nowy kontakt' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
     <mat-form-field appearance="fill">
       <mat-label>Imię</mat-label>
-      <input matInput formControlName="firstName" required>
+      <input matInput formControlName="firstName">
       <mat-error *ngIf="form.get('firstName')?.invalid">Imię jest wymagane</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Nazwisko</mat-label>
-      <input matInput formControlName="lastName" required>
+      <input matInput formControlName="lastName">
       <mat-error *ngIf="form.get('lastName')?.invalid">Nazwisko jest wymagane</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email" required>
+      <input matInput formControlName="email" type="email">
       <mat-error *ngIf="form.get('email')?.invalid">Poprawny email jest wymagany</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Hasło</mat-label>
-      <input matInput formControlName="password" type="password" required>
+      <input matInput formControlName="password" type="password">
       <mat-error *ngIf="form.get('password')?.invalid">Hasło jest wymagane</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Kategoria</mat-label>
-      <mat-select formControlName="categoryId" required>
+      <mat-select formControlName="categoryId">
         <mat-option *ngFor="let category of categories" [value]="category.id">
           {{ category.name }}
         </mat-option>
@@ -54,22 +55,29 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Telefon</mat-label>
-      <input matInput formControlName="phone" required>
+      <input matInput formControlName="phone">
       <mat-error *ngIf="form.get('phone')?.invalid">Telefon jest wymagany</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Data urodzenia</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="birthDate" required>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="form.get('birthDate')?.invalid">Data urodzenia jest wymagana</mat-error>
     </mat-form-field>
 
     <div class="button-row">
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Zapisz</button>
-      <button mat-raised-button color="warn" type="button" (click)="delete()" *ngIf="contactId">Usuń</button>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="form.invalid || !isLoggedIn">
+        Zapisz
+      </button>
+      <button mat-raised-button color="warn" type="button"
+              (click)="delete()"
+              *ngIf="contactId && isLoggedIn">
+        Usuń
+      </button>
       <button mat-button type="button" routerLink="/contacts">Anuluj</button>
     </div>
-  </div>
-</form>
+  </form>
+</div>

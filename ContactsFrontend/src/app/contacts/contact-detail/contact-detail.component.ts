@@ -36,6 +36,7 @@ export class ContactDetailComponent implements OnInit {
   subcategories: Subcategory[] = [];
   showSubcategories = false;
   allowCustomSubcategory = false;
+  isLoggedIn = false;
 
   constructor(
     private fb: FormBuilder,
@@ -58,6 +59,12 @@ export class ContactDetailComponent implements OnInit {
 
   ngOnInit(): void {
     // Get all categories
+    this.isLoggedIn = !!localStorage.getItem('authToken');
+
+    if (!this.isLoggedIn) {
+      this.form.disable();
+    }
+
     this.contactsService.getAllCategories().subscribe(categories => {
       this.categories = categories;
     });
@@ -83,7 +90,6 @@ export class ContactDetailComponent implements OnInit {
         this.showSubcategories = false;
         this.allowCustomSubcategory = false;
         this.form.get('subcategoryId')?.setValue(null);
-        this.form.get('?otherSubcategory')?.setValue('');
       }
     });
   }
@@ -111,6 +117,7 @@ export class ContactDetailComponent implements OnInit {
 
   save(): void {
     // If a custom subcategory is selected, clear the subcategory ID
+    if (!this.isLoggedIn) { return; }
     if (this.allowCustomSubcategory && this.form.value.otherSubcategory) {
       this.form.get('subcategoryId')?.setValue(null);
     }
@@ -125,8 +132,8 @@ export class ContactDetailComponent implements OnInit {
   }
 
   delete(): void {
-    if (this.contactId) {
-      this.contactsService.delete(this.contactId).subscribe(() => this.router.navigate(['/contacts']));
-    }
+    if (!this.isLoggedIn || !this.contactId) { return; }
+    this.contactsService.delete(this.contactId)
+      .subscribe(() => this.router.navigate(['/contacts']));
   }
 }

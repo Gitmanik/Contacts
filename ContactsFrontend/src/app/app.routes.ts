@@ -9,6 +9,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'contacts', component: ContactsListComponent },
   { path: 'contacts/new', component: ContactDetailComponent, canActivate: [AuthGuard] },
-  { path: 'contacts/:id', component: ContactDetailComponent, canActivate: [AuthGuard] },
+  { path: 'contacts/:id', component: ContactDetailComponent },
   { path: '**', redirectTo: 'contacts' }
 ];
